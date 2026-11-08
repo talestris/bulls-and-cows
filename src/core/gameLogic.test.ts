@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { createDigitValidator, isValidGuess } from "./gameLogic";
+import { createDigitValidator, isValidGuess, evaluateGuess } from "./gameLogic";
 
 describe("createDigitValidator", () => {
   it("should validate digits for binary system (base 2)", () => {
@@ -57,5 +57,27 @@ describe("isValidGuess", () => {
 
   it("should work case-insensitively for valid hex duplicate checks", () => {
     expect(isValidGuess("12aA", 4, 10)).toBe(false);
+  });
+});
+
+describe("evaluateGuess", () => {
+  it("should return 4 bulls for an exact match", () => {
+    const result = evaluateGuess(["1", "2", "3", "4"], ["1", "2", "3", "4"]);
+    expect(result).toEqual({ bulls: 4, cows: 0 });
+  });
+
+  it("it should return cows for digits on wrong places", () => {
+    const result = evaluateGuess(["1", "2", "3", "4"], ["4", "3", "2", "1"]);
+    expect(result).toEqual({ bulls: 0, cows: 4 });
+  });
+
+  it("should correctly mix bulls and cows", () => {
+    const result = evaluateGuess(["1", "2", "3", "4"], ["1", "2", "4", "5"]);
+    expect(result).toEqual({ bulls: 2, cows: 1 });
+  });
+
+  it("should work case-insensitively for hex characters", () => {
+    const result = evaluateGuess(["a", "b", "c", "d"], ["a", "z", "b", "y"]);
+    expect(result).toEqual({ bulls: 1, cows: 1 });
   });
 });

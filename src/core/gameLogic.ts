@@ -20,3 +20,13 @@ export const isValidGuess = (guess: string, length: number, base: number): boole
 
   return chars.every((char) => isCharValid(char));
 };
+
+export const evaluateGuess = (
+  secret: string[],
+  guess: string[]
+): { bulls: number; cows: number } => {
+  if (secret && guess) {
+    return { bulls: 0, cows: 0 };
+  }
+  return { bulls: 0, cows: 0 };
+};

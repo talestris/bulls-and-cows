@@ -9,7 +9,14 @@ export const createDigitValidator = (base: number) => {
 };
 
 export const isValidGuess = (guess: string, length: number, base: number): boolean => {
-  if (guess && length && base) return false;
+  if (guess.length !== length) return false;
 
-  return false;
+  const chars = guess.toLowerCase().split("");
+
+  const uniqueChars = new Set(chars);
+  if (uniqueChars.size !== length) return false;
+
+  const isCharValid = createDigitValidator(base);
+
+  return chars.every((char) => isCharValid(char));
 };

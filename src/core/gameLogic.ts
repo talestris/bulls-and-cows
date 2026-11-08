@@ -45,6 +45,16 @@ export const generateSecret = (
   base: number,
   random: () => number = Math.random
 ): string[] => {
-  if (length && base && random) return [];
-  return [];
+  const allowedChars = "0123456789abcdef".slice(0, base);
+  const secret: string[] = [];
+
+  while (secret.length < length) {
+    const randomIndex = Math.floor(random() * allowedChars.length);
+    const chosenChar = allowedChars[randomIndex];
+
+    if (!secret.includes(chosenChar)) {
+      secret.push(chosenChar);
+    }
+  }
+  return secret;
 };

@@ -95,11 +95,18 @@ describe("generateSecret", () => {
   });
 
   it("should be deterministic when custom random source is provided", () => {
-    const mockRandom = () => 0.5;
+    const mockValues = [0.1, 0.2, 0.3, 0.4];
+    let callCount = 0;
 
+    const mockRandom = () => mockValues[callCount++];
+
+    callCount = 0;
     const secret1 = generateSecret(4, 10, mockRandom);
+
+    callCount = 0;
     const secret2 = generateSecret(4, 10, mockRandom);
 
     expect(secret1).toEqual(secret2);
+    expect(secret1.length).toBe(4);
   });
 });

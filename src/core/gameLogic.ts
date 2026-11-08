@@ -39,3 +39,12 @@ export const evaluateGuess = (
 
   return { bulls, cows };
 };
+
+export const generateSecret = (
+  length: number,
+  base: number,
+  random: () => number = Math.random
+): string[] => {
+  if (length && base && random) return [];
+  return [];
+};

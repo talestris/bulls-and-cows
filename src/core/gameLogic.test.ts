@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { createDigitValidator, isValidGuess, evaluateGuess } from "./gameLogic";
+import { createDigitValidator, isValidGuess, evaluateGuess, generateSecret } from "./gameLogic";
 
 describe("createDigitValidator", () => {
   it("should validate digits for binary system (base 2)", () => {
@@ -79,5 +79,27 @@ describe("evaluateGuess", () => {
   it("should work case-insensitively for hex characters", () => {
     const result = evaluateGuess(["a", "b", "c", "d"], ["a", "z", "b", "y"]);
     expect(result).toEqual({ bulls: 1, cows: 1 });
+  });
+});
+
+describe("generateSecret", () => {
+  it("should generate a secret of a correct length", () => {
+    const secret = generateSecret(4, 10);
+    expect(secret.length).toBe(4);
+  });
+
+  it("should generate a secret with unique characters", () => {
+    const secret = generateSecret(6, 16);
+    const uniqueChars = new Set(secret);
+    expect(uniqueChars.size).toBe(6);
+  });
+
+  it("should be deterministic when custom random source is provided", () => {
+    const mockRandom = () => 0.5;
+
+    const secret1 = generateSecret(4, 10, mockRandom);
+    const secret2 = generateSecret(4, 10, mockRandom);
+
+    expect(secret1).toEqual(secret2);
   });
 });

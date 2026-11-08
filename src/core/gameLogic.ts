@@ -7,3 +7,9 @@ export const createDigitValidator = (base: number) => {
     return allowedChars.includes(char.toLowerCase());
   };
 };
+
+export const isValidGuess = (guess: string, length: number, base: number): boolean => {
+  if (guess && length && base) return false;
+
+  return false;
+};

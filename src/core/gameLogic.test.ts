@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { createDigitValidator } from "./gameLogic";
+import { createDigitValidator, isValidGuess } from "./gameLogic";
 
 describe("createDigitValidator", () => {
   it("should validate digits for binary system (base 2)", () => {
@@ -33,5 +33,29 @@ describe("createDigitValidator", () => {
     expect(isHexDigit("a")).toBe(true);
     expect(isHexDigit("F")).toBe(true);
     expect(isHexDigit("g")).toBe(false);
+  });
+});
+
+describe("isValidGuess", () => {
+  it("should return true for a perfectly valid decimal guess", () => {
+    expect(isValidGuess("1234", 4, 10)).toBe(true);
+  });
+
+  it("should return false if the length is incorrect", () => {
+    expect(isValidGuess("123", 4, 10)).toBe(false);
+    expect(isValidGuess("12345", 4, 10)).toBe(false);
+  });
+
+  it("should return false if there are duplicate characters", () => {
+    expect(isValidGuess("1123", 4, 10)).toBe(false);
+  });
+
+  it("should return false if characters are invalid for the base", () => {
+    expect(isValidGuess("123a", 4, 10)).toBe(false);
+    expect(isValidGuess("123g", 4, 16)).toBe(false);
+  });
+
+  it("should work case-insensitively for valid hex duplicate checks", () => {
+    expect(isValidGuess("12aA", 4, 10)).toBe(false);
   });
 });

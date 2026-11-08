@@ -25,8 +25,17 @@ export const evaluateGuess = (
   secret: string[],
   guess: string[]
 ): { bulls: number; cows: number } => {
-  if (secret && guess) {
-    return { bulls: 0, cows: 0 };
-  }
-  return { bulls: 0, cows: 0 };
+  const normSecret = secret.map((char) => char.toLowerCase());
+  const normGuess = guess.map((char) => char.toLowerCase());
+
+  const bulls = normGuess.filter((char, index) => char === normSecret[index]).length;
+
+  const cows = normGuess.filter((char, index) => {
+    const isBull = char === normSecret[index];
+    const existsInSecret = normSecret.includes(char);
+
+    return !isBull && existsInSecret;
+  }).length;
+
+  return { bulls, cows };
 };

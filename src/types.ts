@@ -18,3 +18,11 @@ export interface GameState {
   history: Attempt[];
   startTime: number | null;
 }
+
+export interface HighScore {
+  length: number;
+  base: number;
+  attempts: number;
+  time: number;
+  date: string;
+}

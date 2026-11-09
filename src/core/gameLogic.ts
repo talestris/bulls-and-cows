@@ -59,8 +59,18 @@ export const generateSecret = (
   return secret;
 };
 
-export const countPossibleSecrets = (length: number, base: number): number => {
-  if (length && base) return 0;
+const memo: Record<string, number> = {};
 
-  return 0;
+export const countPossibleSecrets = (length: number, base: number): number => {
+  if (length === 0) return 1;
+
+  const cacheKey = `${length}-${base}`;
+
+  if (cacheKey in memo) return memo[cacheKey];
+
+  const result = base * countPossibleSecrets(length - 1, base - 1);
+
+  memo[cacheKey] = result;
+
+  return result;
 };

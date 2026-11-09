@@ -58,3 +58,9 @@ export const generateSecret = (
   }
   return secret;
 };
+
+export const countPossibleSecrets = (length: number, base: number): number => {
+  if (length && base) return 0;
+
+  return 0;
+};

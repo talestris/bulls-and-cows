@@ -1,5 +1,11 @@
 import { describe, it, expect } from "vitest";
-import { createDigitValidator, isValidGuess, evaluateGuess, generateSecret } from "./gameLogic";
+import {
+  createDigitValidator,
+  isValidGuess,
+  evaluateGuess,
+  generateSecret,
+  countPossibleSecrets,
+} from "./gameLogic";
 
 describe("createDigitValidator", () => {
   it("should validate digits for binary system (base 2)", () => {
@@ -108,5 +114,16 @@ describe("generateSecret", () => {
 
     expect(secret1).toEqual(secret2);
     expect(secret1.length).toBe(4);
+  });
+});
+
+describe("countPossibleSecrets", () => {
+  it("should calculate permutations correctly", () => {
+    expect(countPossibleSecrets(2, 2)).toBe(2);
+    expect(countPossibleSecrets(4, 10)).toBe(5040);
+  });
+
+  it("should return 1 if length is 0 (base case)", () => {
+    expect(countPossibleSecrets(0, 10)).toBe(1);
   });
 });

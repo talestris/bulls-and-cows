@@ -18,7 +18,7 @@ export const renderGameScreen = (): HTMLElement => {
 
   const backButton = document.createElement("button");
   backButton.className = "back-button";
-  backButton.textContent = "Settings";
+  backButton.textContent = "New Game";
   backButton.addEventListener("click", resetToSetup);
   header.appendChild(backButton);
   container.appendChild(header);

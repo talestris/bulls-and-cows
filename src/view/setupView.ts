@@ -17,7 +17,7 @@ export const renderSetupScreen = (): HTMLElement => {
   baseSection.className = "section";
 
   const baseTitle = document.createElement("h3");
-  baseTitle.textContent = "numeral system";
+  baseTitle.textContent = "Select Number Base";
   baseSection.appendChild(baseTitle);
 
   const baseButtonsContainer = document.createElement("div");
@@ -40,7 +40,7 @@ export const renderSetupScreen = (): HTMLElement => {
   lengthSelectContainer.appendChild(lengthTitle);
 
   const lengthButtonsContainer = document.createElement("div");
-  lengthButtonsContainer.className = "buttons-row;";
+  lengthButtonsContainer.className = "buttons-row";
 
   const infotext = document.createElement("p");
   infotext.className = "combinations-info";
@@ -115,7 +115,7 @@ export const renderSetupScreen = (): HTMLElement => {
     scoresSection.className = "scores-section";
 
     const scoresTitle = document.createElement("h3");
-    scoresTitle.textContent = "LeaderBoard (Top-10)";
+    scoresTitle.textContent = "Leaderboard (Top 10)";
     scoresSection.appendChild(scoresTitle);
 
     const table = document.createElement("table");

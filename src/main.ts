@@ -1,6 +1,8 @@
+import "./style.css";
 import type { GameState, GameSettings } from "./types";
 import { generateSecret } from "./core/gameLogic";
-import { renderApp } from "./view";
+import { renderApp } from "./view/index";
+import { saveHighscore } from "./services/storage";
 
 const DEFAULT_SETTINGS: GameSettings = {
   length: 4,
@@ -31,12 +33,18 @@ export const startNewRound = (settings: GameSettings): void => {
 
 export const addGameAttempt = (guessStr: string, bulls: number, cows: number): void => {
   const newAttempt = { guess: guessStr, bulls, cows };
+  const updatedHistory = [...state.history, newAttempt];
 
   const isWon = bulls === state.settings.length;
 
+  if (isWon && state.startTime) {
+    const timeElapsed = Date.now() - state.startTime;
+    saveHighscore(state.settings.length, state.settings.base, updatedHistory.length, timeElapsed);
+  }
+
   state = {
     ...state,
-    history: [...state.history, newAttempt],
+    history: updatedHistory,
     status: isWon ? "won" : "playing",
   };
 
@@ -55,4 +63,6 @@ export const resetToSetup = (): void => {
   renderApp();
 };
 
-renderApp();
+setTimeout(() => {
+  renderApp();
+}, 0);

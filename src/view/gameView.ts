@@ -13,7 +13,7 @@ export const renderGameScreen = (): HTMLElement => {
   header.className = "game-header";
 
   const title = document.createElement("h2");
-  title.textContent = `The game: ${length} (base ${base})`;
+  title.textContent = `Game Mode: ${length} digits (base ${base})`;
   header.appendChild(title);
 
   const backButton = document.createElement("button");
@@ -36,20 +36,24 @@ export const renderGameScreen = (): HTMLElement => {
     input.className = "guess-input";
 
     input.addEventListener("keypress", (e) => {
-      if (e.key === "Enter" || e.key === "Space" || e.key === "Tab") return;
+      if (e.key === "Enter" || e.key === " " || e.key === "Tab") return;
 
-      if (!isCharValid(e.key)) e.preventDefault;
+      if (!isCharValid(e.key)) e.preventDefault();
     });
 
     const submitButton = document.createElement("button");
     submitButton.className = "submit-button";
     submitButton.textContent = "Check";
 
+    const errorDisplay = document.createElement("p");
+    errorDisplay.className = "error-message";
+
     const handleAddGuess = () => {
       const guessStr = input.value.trim();
+      errorDisplay.textContent = "";
 
       if (!isValidGuess(guessStr, length, base)) {
-        throw new Error(`You must input exactly ${length} unique digits`);
+        errorDisplay.textContent = `You must input exactly ${length} unique digits`;
         return;
       }
 
@@ -57,7 +61,7 @@ export const renderGameScreen = (): HTMLElement => {
         (h) => h.guess.toLowerCase() === guessStr.toLowerCase()
       );
       if (isDuplicate) {
-        throw new Error("You already tried this input");
+        errorDisplay.textContent = "You already tried this combination!";
         input.value = "";
         return;
       }
@@ -65,22 +69,18 @@ export const renderGameScreen = (): HTMLElement => {
       const guessArray = guessStr.split("");
       const { bulls, cows } = evaluateGuess(state.secret, guessArray);
 
-      if (bulls === length && state.startTime) {
-        const timeElapsed = Date.now() - state.startTime;
-        saveHighscore(length, base, state.history.length + 1, timeElapsed);
-      }
-
       addGameAttempt(guessStr, bulls, cows);
     };
 
     submitButton.addEventListener("click", handleAddGuess);
     input.addEventListener("keydown", (e) => {
-      if (e.key === "Enter") handleAddGuess;
+      if (e.key === "Enter") handleAddGuess();
     });
 
     inputSection.appendChild(input);
     inputSection.appendChild(submitButton);
     container.appendChild(inputSection);
+    container.appendChild(errorDisplay);
 
     setTimeout(() => input.focus(), 0);
   }
@@ -90,7 +90,7 @@ export const renderGameScreen = (): HTMLElement => {
     winSection.className = "win-section animate-win";
 
     const winTitle = document.createElement("h2");
-    winTitle.textContent = "Wow, you won!";
+    winTitle.textContent = "You won!";
     winSection.appendChild(winTitle);
 
     const secretText = document.createElement("p");
@@ -117,7 +117,7 @@ export const renderGameScreen = (): HTMLElement => {
     historySection.className = "history-section";
 
     const historyTitle = document.createElement("h3");
-    historyTitle.textContent = "Attempts history";
+    historyTitle.textContent = "Previous attempts";
     historySection.appendChild(historyTitle);
 
     const historyList = document.createElement("div");
